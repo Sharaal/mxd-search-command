@@ -5,7 +5,7 @@
   "homepage": "http://github.com/dragonprojects/mxd-search-command",
   "license": "MIT",
   "readmeFilename": "README.md",
-  "main": "dest/lib.js",
+  "main": "dest/command.js",
   "scripts": {
     "postinstall": "npm run transpile",
     "transpile": "babel src -d dest"
