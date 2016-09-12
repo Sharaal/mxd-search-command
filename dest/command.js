@@ -6,18 +6,19 @@ const AssetsQuery = require('mxd-heimdall').AssetsQuery;
 
 module.exports = _ref => {
   let heimdall = _ref.heimdall;
+  let pageSize = _ref.pageSize;
   return (() => {
     var _ref2 = _asyncToGenerator(function* (_ref3) {
       let args = _ref3.args;
       let reply = _ref3.reply;
 
-      const query = new AssetsQuery().filter('contentTypeSeriesOrMovies').filter('search', args);
-      const assets = yield heimdall(query);
+      const query = new AssetsQuery().filter('contentTypeSeriesOrMovies').filter('search', args).query('pageSize', pageSize);
+      const assets = yield heimdall.getAssets(query);
       if (assets.length) {
         const texts = assets.map(function (asset) {
           return reply.link(`https://store.maxdome.de/${ asset.id }`, asset.title);
         });
-        texts.push(reply.link(`https://store.maxdome.de/suche?search=${ args }`, 'show all...'));
+        texts.push(reply.link(`https://store.maxdome.de/suche?search=${ encodeURIComponent(args) }`, 'show all...'));
         reply.send(texts);
       } else {
         reply.send(`no results found for "${ args }"`);
