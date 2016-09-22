@@ -16,11 +16,18 @@ module.exports = _ref => {
       const query = new AssetsQuery().filter('contentTypeSeriesOrMovies').filter('search', args).query('pageSize', pageSize);
       const assets = yield heimdall.getAssets(query);
       if (assets.length) {
-        const texts = assets.map(function (asset) {
-          return reply.link(`https://${ hostname }/${ asset.id }`, asset.title);
+        const attachements = assets.map(function (asset) {
+          return {
+            title: reply.link(`https://${ hostname }/${ asset.id }`, asset.title),
+            text: asset.description,
+            actions: [{
+              text: 'Merken',
+              name: 'mxd-notepad-add',
+              value: asset.id
+            }]
+          };
         });
-        texts.push(reply.link(`https://${ hostname }/suche?search=${ encodeURIComponent(args) }`, 'show all...'));
-        reply.send(texts);
+        reply.send(`results found, ${ reply.link(`https://${ hostname }/suche?search=${ encodeURIComponent(args) }`, 'show all...') }`, attachements);
       } else {
         reply.send(`no results found for "${ args }"`);
       }

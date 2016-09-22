@@ -6,9 +6,21 @@ module.exports = ({ AssetsQuery, heimdall, hostname, pageSize }) => async ({ arg
     .query('pageSize', pageSize);
   const assets = await heimdall.getAssets(query);
   if (assets.length) {
-    const texts = assets.map(asset => reply.link(`https://${hostname}/${asset.id}`, asset.title));
-    texts.push(reply.link(`https://${hostname}/suche?search=${encodeURIComponent(args)}`, 'show all...'));
-    reply.send(texts);
+    const attachements = assets.map(asset => {
+      return {
+        title: reply.link(`https://${hostname}/${asset.id}`, asset.title),
+        text: asset.description,
+        actions: [{
+          text: 'Merken',
+          name: 'mxd-notepad-add',
+          value: asset.id
+        }]
+      };
+    });
+    reply.send(
+      `results found, ${reply.link(`https://${hostname}/suche?search=${encodeURIComponent(args)}`, 'show all...')}`,
+      attachements
+    );
   } else {
     reply.send(`no results found for "${args}"`);
   }
