@@ -28,7 +28,7 @@ module.exports = _ref => {
             }]
           };
         });
-        reply.send(`results found, ${ reply.link(`https://${ hostname }/suche?search=${ encodeURIComponent(args) }`, 'show all...') }`, attachments);
+        reply.send(reply.link(`https://${ hostname }/suche?search=${ encodeURIComponent(args) }`, 'show all...'), attachments);
       } else {
         reply.send(`no results found for "${ args }"`);
       }
