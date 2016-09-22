@@ -16,7 +16,7 @@ module.exports = _ref => {
       const query = new AssetsQuery().filter('contentTypeSeriesOrMovies').filter('search', args).query('pageSize', pageSize);
       const assets = yield heimdall.getAssets(query);
       if (assets.length) {
-        const attachements = assets.map(function (asset) {
+        const attachments = assets.map(function (asset) {
           return {
             title: reply.link(`https://${ hostname }/${ asset.id }`, asset.title),
             text: asset.description,
@@ -27,7 +27,7 @@ module.exports = _ref => {
             }]
           };
         });
-        reply.send(`results found, ${ reply.link(`https://${ hostname }/suche?search=${ encodeURIComponent(args) }`, 'show all...') }`, attachements);
+        reply.send(`results found, ${ reply.link(`https://${ hostname }/suche?search=${ encodeURIComponent(args) }`, 'show all...') }`, attachments);
       } else {
         reply.send(`no results found for "${ args }"`);
       }
